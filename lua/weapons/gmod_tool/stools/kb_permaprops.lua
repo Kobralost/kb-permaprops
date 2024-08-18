@@ -35,7 +35,7 @@ KBPermaProps.Language = {
 	["en"] = {
 		["toolName"] = "KB Permaprops",
 		["toolDesc"] = "Save props permanently on your map",
-		["singlePlayer"] = "You are on singleplayer KBPermaProps is disable and cannot work please lunch a pear to pear server",
+		["singlePlayer"] = "You are on singleplayer KBPermaProps is disable and cannot work please lunch a peer to peer server",
 		["toolLeft"] = "Left-click to save/update the entity that you are looking at",
 		["toolRight"] = "Right-click to remove the permaprops that you are looking at",
 		["toolReload"] = "Reload to reload all permament props",
@@ -50,11 +50,12 @@ KBPermaProps.Language = {
 		["noEntitiesSaved"] = "No entities saved",
 		["noEntitiesSavedDesc"] = "You don't have any entities saved on your map",
 		["transferedPermaProps"] = "[KBPermaProps] Succesfuly transfered all permaprops to the KBPermaProps system",
+		["peerToPeerNeededLog"] = "[KBPermaProps] - You are on singleplayer KBPermaProps is disable and cannot work please lunch a peer to peer server",
 	},
 	["fr"] = {
 		["toolName"] = "KB Permaprops",
 		["toolDesc"] = "Sauvegarder vos props de manière permanente sur votre map",
-		["singlePlayer"] = "Vous êtes en solo KBPermaProps est désactivé et ne peut pas fonctionner veuillez lancer un serveur en pear to pear",
+		["singlePlayer"] = "Vous êtes en solo KBPermaProps est désactivé et ne peut pas fonctionner veuillez lancer un serveur en peer to peer",
 		["toolLeft"] = "Clique gauche pour sauvegarder/mettre à jour l'entité que vous regardez",
 		["toolRight"] = "Clique droit pour supprimer le permaprops que vous regardez",
 		["toolReload"] = "Recharger pour faire réaparaitre tous les permaprops",
@@ -69,12 +70,13 @@ KBPermaProps.Language = {
 		["transferedPermaProps"] = "[KBPermaProps] Transfert de toutes les entités sauvegardées vers le système KBPermaProps",
 		["noEntitiesSaved"] = "Aucune entité sauvegardée",
 		["noEntitiesSavedDesc"] = "Vous n'avez aucune entité sauvegardée sur votre map",
+		["peerToPeerNeededLog"] = "[KBPermaProps] - Vous êtes en solo KBPermaProps est désactivé et ne peut pas fonctionner veuillez lancer un serveur en peer to peer",
 	},
 }
 
 if game.SinglePlayer() then
 	for i=1, 5 do
-		print("[KBPermaProps] - You are on singleplayer KBPermaProps is disable and cannot work please lunch a peer to peer server")
+		print(getSentence("peerToPeerNeededLog"))
 	end
 end
 
