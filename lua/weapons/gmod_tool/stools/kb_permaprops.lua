@@ -578,10 +578,10 @@ else
 		local model = ent:GetModel()
 		local pos = ent:GetPos()
 		local ang = ent:GetAngles()
-		local color = ent:GetColor()
-		local material = ent:GetMaterial()
-		local entSkin = ent:GetSkin()
-		local scale = ent:GetModelScale()
+		local color = ent:GetColor() or color_white
+		local material = ent:GetMaterial() or ""
+		local entSkin = ent:GetSkin() or 1
+		local scale = ent:GetModelScale() or 1
 		
 		local bodygroups = {}
 		for i=0, (ent:GetNumBodyGroups() - 1) do
