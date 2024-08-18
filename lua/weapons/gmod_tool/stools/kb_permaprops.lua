@@ -26,7 +26,7 @@ KBPermaProps.Constants = {
 	["grey"] = Color(150, 150, 150),
 	["grey30"] = Color(150, 150, 150, 30),
 	["red"] = Color(238, 82, 83),
-	["toolgun"] = Material("materials/Group 1 (1).png", "$ignorez"), // to do need to change the path
+	["toolgun"] = Material("kb_tools/permaprops_background.png", "$ignorez"),
 	["background"] = Material("kb_tools/toolBackground.png", "smooth"),
 }
 
@@ -150,6 +150,7 @@ if CLIENT then
 	end
 
 	local function reloadSavedEnt()
+		if not istable(KBPermaProps.PropsToShow) then return end
 		if not IsValid(kbPermaPropsScroll) then return end
 
 		kbPermaPropsScroll:Clear()
@@ -284,7 +285,7 @@ if CLIENT then
 		kbPermaPropsScroll.Paint = function(self, w, h) 
 			self:SetSize(mainPanel:GetWide(), KBPermaProps.ScrH*0.4)
 
-			draw.RoundedBox(0, 0, 0, w, h, KBDuplicator.Constants["white5"])
+			draw.RoundedBox(0, 0, 0, w, h, KBPermaProps.Constants["white5"])
 		end
 
 		local scrollBar = kbPermaPropsScroll:GetVBar()
