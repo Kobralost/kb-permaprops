@@ -15,7 +15,7 @@ KBPermaProps.RanksAccess = {
 }
 
 --[[ Language of the addon ]]
-KBPermaProps.SelectedLanguage = "fr"
+KBPermaProps.SelectedLanguage = "en"
 
 --[[ All constants of the addon ]]
 KBPermaProps.Constants = {
