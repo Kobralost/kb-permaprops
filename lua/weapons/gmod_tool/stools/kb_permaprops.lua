@@ -719,10 +719,6 @@ else
 				end
 			end
 	
-			if isnumber(entData["solid"]) then
-				ent:SetSolid(entData["solid"])
-			end
-
 			if isstring(entData["material"]) and entData["material"] != "" then
 				ent:SetMaterial(entData["material"])
 			end
@@ -788,6 +784,10 @@ else
 				if isnumber(option["renderfx"]) then
 					ent:SetRenderFX(option["renderfx"])
 				end
+
+				if isnumber(option["solid"]) then
+					ent:SetSolid(option["solid"])
+				end	
 			end
 
 			ent:Spawn()
@@ -958,7 +958,7 @@ else
 
 	hook.Add("InitPostEntity", "KBPermaProps:InitPostEntity:InitDatabase", function()
 		KBPermaProps.InitDatabaseTable()
-		
+
 		timer.Simple(1, function()
 			KBPermaProps.ReloadAllSavedEnts()
 		end)
@@ -983,9 +983,10 @@ else
 			if not isangle(ang) then continue end
 
 			local color = options["Color"]
-			if not istable(color) or not isnumber(color.r) or not isnumber(color.g) or not isnumber(color.b) or not isnumber(color.a) then
-				color = color_white
-			end
+            if not istable(color) or not isnumber(color.r) or not isnumber(color.g) or not isnumber(color.b) or not isnumber(color.a) then
+                color = color_white
+            end
+            color = util.TableToJSON(color)
 
 			local material = options["Material"] or ""
 			local entSkin = options["Skin"] or 0
