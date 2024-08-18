@@ -74,7 +74,7 @@ KBPermaProps.Language = {
 
 if game.SinglePlayer() then
 	for i=1, 5 do
-		print("[KBPermaProps] - You are on singleplayer KBPermaProps is disable and cannot work please lunch a pear to pear server")
+		print("[KBPermaProps] - You are on singleplayer KBPermaProps is disable and cannot work please lunch a peer to peer server")
 	end
 end
 
