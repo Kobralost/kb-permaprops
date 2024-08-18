@@ -339,8 +339,6 @@ if CLIENT then
 		KBPermaProps.ScrW, KBPermaProps.ScrH = ScrW(), ScrH()
 	
 		loadFonts()
-
-		print("[KBPermaProps] Initialize all variables, fonts and folders")
 		hook.Remove("HUDPaint", "KBPermaProps:HUDPaint:Initialize")
 	end)
 
