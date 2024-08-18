@@ -507,6 +507,14 @@ else
 	net.Receive("KBPermaProps:MainNet", function(len, ply)
 		if not IsValid(ply) then return end
 
+		ply.KBPermaProps = ply.KBPermaProps or {}
+
+		local curTime = CurTime()
+
+		ply.KBPermaProps["antiSpam"] = ply.KBPermaProps["antiSpam"] or 0
+		if ply.KBPermaProps["antiSpam"] > curTime then return end
+		ply.KBPermaProps["antiSpam"] = curTime + 0.5
+
 		local uInt = net.ReadUInt(4)
 
 		if uInt == 1 then
@@ -540,8 +548,8 @@ else
 			map TEXT, 
 			color TEXT, 
 			material TEXT, 
-			skin TEXT, 
-			scale TEXT, 
+			skin INT, 
+			scale INT, 
 			bodygroup LONGTEXT, 
 			option LONGTEXT)]]
 		):format(KBPermaProps.AutoIncrement()))
@@ -726,12 +734,14 @@ else
 				ent:SetMaterial(entData["material"])
 			end
 	
-			if isstring(entData["skin"]) and entData["skin"] != "" then
-				ent:SetSkin(entData["skin"])
+			local entSkin = tonumber(entData["skin"])
+			if isnumber(entSkin) then
+				ent:SetSkin(entSkin)
 			end
 	
-			if isstring(entData["scale"]) and entData["scale"] != "" then
-				ent:SetModelScale(entData["scale"])
+			local scale = tonumber(entData["scale"])
+			if isnumber(scale) then
+				ent:SetModelScale(scale)
 			end
 
 			if isstring(entData["networkVars"]) && entData["networkVars"] != "" then
@@ -776,20 +786,24 @@ else
 			local option = util.JSONToTable(entData["option"])
 	
 			if option then
-				if isnumber(option["collision"]) then
-					ent:SetCollisionGroup(option["collision"])
+				local collision = tonumber(option["collision"])
+				if isnumber(collision) then
+					ent:SetCollisionGroup(collision)
 				end
 	
-				if isnumber(option["rendermode"]) then
-					ent:SetRenderMode(option["rendermode"])
+				local rendermode = tonumber(option["rendermode"])
+				if isnumber(rendermode) then
+					ent:SetRenderMode(rendermode)
 				end
 	
-				if isnumber(option["renderfx"]) then
-					ent:SetRenderFX(option["renderfx"])
+				local renderfx = tonumber(option["renderfx"])
+				if isnumber(renderfx) then
+					ent:SetRenderFX(renderfx)
 				end
 
-				if isnumber(option["solid"]) then
-					ent:SetSolid(option["solid"])
+				local solid = tonumber(option["solid"])
+				if isnumber(solid) then
+					ent:SetSolid(solid)
 				end	
 			end
 
