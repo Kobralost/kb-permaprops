@@ -74,12 +74,6 @@ KBPermaProps.Language = {
 	},
 }
 
-if game.SinglePlayer() then
-	for i=1, 5 do
-		print(getSentence("peerToPeerNeededLog"))
-	end
-end
-
 local function getSentence(key)
 	local lang = KBPermaProps.SelectedLanguage
 
@@ -89,6 +83,12 @@ local function getSentence(key)
 	local langToReturn = KBPermaProps.Language[lang][key] or (KBPermaProps.Language["en"][key] and KBPermaProps.Language["en"][key] or "Bad sentence")
 
 	return langToReturn
+end
+
+if game.SinglePlayer() then
+	for i=1, 5 do
+		print(getSentence("peerToPeerNeededLog"))
+	end
 end
 
 local function callbackAllPlayersWithToolGun(callback)
