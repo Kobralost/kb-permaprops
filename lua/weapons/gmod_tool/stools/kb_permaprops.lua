@@ -39,18 +39,38 @@ KBPermaProps.Language = {
 		["toolLeft"] = "Left-click to save/update the entity that you are looking at",
 		["toolRight"] = "Right-click to remove the permaprops that you are looking at",
 		["toolReload"] = "Reload to reload all permament props",
-		["succesfulyReload"] = "Succesfuly reloaded all saved entities",
-		["succesfulyRemoved"] = "Succesfuly removed the entity with the id #%s",
-		["succesfulyRemovedLog"] = "[KBPermaProps] Succesfuly removed the entity with the id #%s",
-		["succesfulySaved"] = "Succesfuly saved the entity with the id #%s",
-		["succesfulySavedLog"] = "[KBPermaProps] Succesfuly saved the entity with the id #%s",
-		["succesfulyUpdated"] = "Succesfuly updated the entity with the id #%s",
-		["succesfulyUpdatedLog"] = "[KBPermaProps] Succesfuly updated the entity with the id #%s",
+		["succesfulyReload"] = "Successfully reloaded all saved entities",
+		["succesfulyRemoved"] = "Successfully removed the entity with the id #%s",
+		["succesfulyRemovedLog"] = "[KBPermaProps] Successfully removed the entity with the id #%s",
+		["succesfulySaved"] = "Successfully saved the entity with the id #%s",
+		["succesfulySavedLog"] = "[KBPermaProps] Successfully saved the entity with the id #%s",
+		["succesfulyUpdated"] = "Successfully updated the entity with the id #%s",
+		["succesfulyUpdatedLog"] = "[KBPermaProps] Successfully updated the entity with the id #%s",
 		["permaPropsId"] = "KB PermaProps - ID #%s",
 		["noEntitiesSaved"] = "No entities saved",
 		["noEntitiesSavedDesc"] = "You don't have any entities saved on your map",
-		["transferedPermaProps"] = "[KBPermaProps] Succesfuly transfered all permaprops to the KBPermaProps system",
+		["transferedPermaProps"] = "[KBPermaProps] Successfully transfered all permaprops to the KBPermaProps system",
 		["peerToPeerNeededLog"] = "[KBPermaProps] - You are on singleplayer KBPermaProps is disable and cannot work please lunch a peer to peer server",
+	},
+	["tr"] = {
+		["toolName"] = "KB Permaprops",
+		["toolDesc"] = "Nesneleri haritanıza kalıcı olarak kaydedin",
+		["singlePlayer"] = "Tek oyunculuda 'KBPermaProps' kullanıyorsunuz. Lütfen eklentinin çalışması için bir eşler arası sunucu başlatın",
+		["toolLeft"] = "Baktığınız varlığı kaydetmek/güncellemek için sol tıklayın",
+		["toolRight"] = "Baktığınız kalıcı nesneleri kaldırmak için sağ tıklayın",
+		["toolReload"] = "Tüm kalıcı nesneleri yeniden yüklemek için yeniden yükleyin",
+		["succesfulyReload"] = "Kaydedilen tüm varlıklar başarıyla yeniden yüklendi",
+		["succesfulyRemoved"] = "Kimliği #%s olan varlık başarıyla kaldırıldı",
+		["succesfulyRemovedLog"] = "[KBPermaProps] #%s kimlikli varlık başarıyla kaldırıldı",
+		["succesfulySaved"] = "#%s kimlikli varlık başarıyla kaydedildi",
+		["succesfulySavedLog"] = "[KBPermaProps] #%s kimlikli varlık başarıyla kaydedildi",
+		["succesfulyUpdated"] = "#%s kimlikli varlık başarıyla güncellendi",
+		["succesfulyUpdatedLog"] = "[KBPermaProps] #%s kimlikli varlık başarıyla güncellendi",
+		["permaPropsId"] = "KB PermaProps - ID #%s",
+		["noEntitiesSaved"] = "Hiçbir varlık kaydedilmedi",
+		["noEntitiesSavedDesc"] = "Haritanızda kayıtlı herhangi bir varlığınız yok",
+		["transferedPermaProps"] = "[KBPermaProps] Tüm kalıcı nesneler KBPermaProps sistemine başarıyla aktarıldı",
+		["peerToPeerNeededLog"] = "[KBPermaProps] Tek oyunculuda 'KBPermaProps' kullanıyorsunuz. Lütfen eklentinin çalışması için bir eşler arası sunucu başlatın",
 	},
 	["fr"] = {
 		["toolName"] = "KB Permaprops",
@@ -434,7 +454,7 @@ else
 		mysqlDB = mysqloo.connect(KBPermaProps.MysqlInformations["host"], KBPermaProps.MysqlInformations["username"], KBPermaProps.MysqlInformations["password"], KBPermaProps.MysqlInformations["database"], {["port"] = KBPermaProps.MysqlInformations["port"]})
 
 		function mysqlDB:onConnected()  
-			print("[KBPermaProps] Succesfuly connected to the mysql database !")
+			print("[KBPermaProps] Successfully connected to the mysql database !")
 			KBPermaProps.MysqlConnected = true
 		end
 		
