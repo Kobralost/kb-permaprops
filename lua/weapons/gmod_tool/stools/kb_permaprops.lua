@@ -451,7 +451,7 @@ else
 			return print("[KBPermaProps] Cannot require mysqloo module :\n"..requireError)
 		end
 
-		mysqlDB = mysqloo.connect(KBPermaProps.MysqlInformations["host"], KBPermaProps.MysqlInformations["username"], KBPermaProps.MysqlInformations["password"], KBPermaProps.MysqlInformations["database"], {["port"] = KBPermaProps.MysqlInformations["port"]})
+		mysqlDB = mysqloo.connect(KBPermaProps.MysqlInformations["host"], KBPermaProps.MysqlInformations["username"], KBPermaProps.MysqlInformations["password"], KBPermaProps.MysqlInformations["database"], KBPermaProps.MysqlInformations["port"])
 
 		function mysqlDB:onConnected()  
 			print("[KBPermaProps] Successfully connected to the mysql database !")
@@ -585,7 +585,7 @@ else
 	end
 
 	-- [[ Save a prop on the database ]]
-	function KBPermaProps.SaveEnt(ent, ply)
+	function KBPermaProps.SaveEnt(ent, ply, withToolGun)
 		if not IsValid(ent) then return end
 
 		local update = ent.KBPermaPropsId
@@ -626,18 +626,31 @@ else
 			isFrozen = phys:IsMoveable()
 		end
 
+		local networkVars = {}
+		if ent.GetNetworkVars && isfunction(ent.GetNetworkVars) then
+			local vars = ent:GetNetworkVars()
+
+			if istable(vars) then
+				networkVars = vars
+			end
+		end
+
+		if not istable(networkVars) then
+			networkVars = {}
+		end
+
 		local optionTable = {
 			["collision"] = ent:GetCollisionGroup(),
 			["rendermode"] = ent:GetRenderMode(),
 			["renderfx"] = ent:GetRenderFX(),
 			["getName"] = ent:GetName(),
 			["solid"] = ent:GetSolid(),
-			["networkVars"] = (ent.GetNetworkVars && isfunction(ent.GetNetworkVars)) and util.TableToJSON(ent:GetNetworkVars()) or {},
+			["networkVars"] = util.TableToJSON(networkVars),
 			["subMaterials"] = util.TableToJSON(subMaterialsToSave),
 			["isFrozen"] = (!isFrozen),
 		}
 
-		local option = util.TableToJSON((optionTable or {})) or "{}"
+		local option = util.TableToJSON(optionTable) or "[]"
 
 		local query = ""
 		if update then
@@ -682,14 +695,14 @@ else
 						ply:KBPermaPropsNotify(getSentence("succesfulySaved"):format(data["lastInsertId"]), 0, 5)
 					end
 					
-					KBPermaProps.CreateEntSaved(tonumber(data["lastInsertId"]), ply)
+					KBPermaProps.CreateEntSaved(tonumber(data["lastInsertId"]), ply, withToolGun)
 				end
 			end
 		end)
 	end
 
 	-- [[ Remove a saved entity ]]
-	function KBPermaProps.RemoveEntSaved(entId, ply)
+	function KBPermaProps.RemoveEntSaved(entId, ply, withToolGun)
 		KBPermaProps.Query(("DELETE FROM kb_permaprops WHERE id = %s AND map = %s"):format(KBPermaProps.Escape(entId), KBPermaProps.Escape(KBPermaPropsMap)), function()
 			print(getSentence("succesfulyRemovedLog"):format(entId))
 
@@ -703,13 +716,19 @@ else
 
 				ply:KBPermaPropsNotify(getSentence("succesfulyRemoved"):format(entId), 1, 5)
 
+				if withToolGun then
+					callbackAllPlayersWithToolGun(function(ply)
+						KBPermaProps.SendRemoveSavedEnt(entId, ply)
+					end)
+				end
+
 				KBPermaProps.AllPropsSpawned[entId] = nil
 			end
 		end)
 	end
 
 	-- [[ Create a saved entity ]]
-	function KBPermaProps.CreateEntSaved(entId, ply)
+	function KBPermaProps.CreateEntSaved(entId, ply, withToolGun)
 		KBPermaProps.AllPropsSpawned = KBPermaProps.AllPropsSpawned or {}
 
 		local ent = KBPermaProps.AllPropsSpawned[entId]
@@ -829,12 +848,6 @@ else
 			ent:Activate()
 			ent.KBPermaPropsId = entId
 
-			ent:CallOnRemove("kb_permaprops_remove", function()
-				callbackAllPlayersWithToolGun(function(ply)
-					KBPermaProps.SendRemoveSavedEnt(ent:EntIndex(), ply)
-				end)
-			end)
-
 			if option["isFrozen"] then
 				local phys = ent:GetPhysicsObject()
 
@@ -843,7 +856,7 @@ else
 				end
 			end
 
-			if IsValid(ply) then
+			if IsValid(ply) && withToolGun then
 				callbackAllPlayersWithToolGun(function(ply)
 					KBPermaProps.SendSavedEnt(ent, ply)
 				end)
@@ -938,7 +951,7 @@ else
 
 		if not IsValid(ent) or ent:IsPlayer() or ent:IsVehicle() then return end
 
-		KBPermaProps.SaveEnt(ent, owner)
+		KBPermaProps.SaveEnt(ent, owner, true)
 	end
 
 	function TOOL:RightClick()
@@ -961,7 +974,7 @@ else
 		local entId = ent.KBPermaPropsId
 		if not isnumber(entId) then return end
 
-		KBPermaProps.RemoveEntSaved(entId, owner)
+		KBPermaProps.RemoveEntSaved(entId, owner, true)
 	end
 
 	function TOOL:Reload()
@@ -1026,7 +1039,7 @@ else
 			local material = options["Material"] or ""
 			local entSkin = options["Skin"] or 0
 			local scale = options["ModelScale"] or 1
-			local bodygroup = util.TableToJSON(options["BodyG"] or {})
+			local bodygroup = util.TableToJSON((options["BodyG"] or {}))
 
 			local newOptions = {
 				["isFrozen"] = options["Frozen"],
