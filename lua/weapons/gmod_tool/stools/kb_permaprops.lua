@@ -1079,6 +1079,61 @@ else
 
 		KBPermaProps.ReloadAllSavedEnts()
 	end
+
+	function KBPermaProps.TransferToMap(fromMap, toMap)
+		if not isstring(fromMap) or not isstring(toMap) then return end
+
+		KBPermaProps.Query(("DELETE FROM kb_permaprops WHERE map = %s"):format(KBPermaProps.Escape(toMap)), function()
+			KBPermaProps.Query(("SELECT * FROM kb_permaprops WHERE map = %s"):format(KBPermaProps.Escape(fromMap)), function(data)
+				if not data or not istable(data) then return end
+
+				for k, v in pairs(data) do
+					local query = "INSERT INTO kb_permaprops (class, model, pos, ang, map, color, material, skin, scale, bodygroup, option) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+					local options = util.JSONToTable(v["option"])
+					if not istable(options) then continue end
+					
+					local pos = util.StringToType(v["pos"], "Vector")
+					if not isvector(pos) then continue end
+					
+					local ang = util.StringToType(v["ang"], "Angle")
+					if not isangle(ang) then continue end
+					
+					local color = util.JSONToTable(v["color"])
+					if not istable(color) or not isnumber(color.r) or not isnumber(color.g) or not isnumber(color.b) or not isnumber(color.a) then
+						color = color_white
+					end
+					color = util.TableToJSON(color)
+					
+					local material = v["material"] or ""
+					local entSkin = tonumber(v["skin"]) or 0
+					local scale = tonumber(v["scale"]) or 1
+					local bodygroup = util.JSONToTable(v["bodygroup"]) or {}
+					
+					local newOptions = util.JSONToTable(v["option"])
+					if not istable(newOptions) then continue end
+
+					newOptions = util.TableToJSON(newOptions)
+
+					query = query:format(
+						KBPermaProps.Escape(v["class"]),
+						KBPermaProps.Escape(v["model"]),
+						KBPermaProps.Escape(tostring(pos)),
+						KBPermaProps.Escape(tostring(ang)),
+						KBPermaProps.Escape(toMap),
+						KBPermaProps.Escape(color),
+						KBPermaProps.Escape(material),
+						KBPermaProps.Escape(entSkin),
+						KBPermaProps.Escape(scale),
+						KBPermaProps.Escape(util.TableToJSON(bodygroup)),
+						KBPermaProps.Escape(newOptions)
+					)
+
+					KBPermaProps.Query(query)
+				end
+			end)
+		end)
+	end
 	
 	concommand.Add("kbpermaprops_transfer_permaprops", function(ply)
 		if ply != NULL and not IsValid(ply) then return end
